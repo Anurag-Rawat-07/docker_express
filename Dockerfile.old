@@ -1,0 +1,20 @@
+FROM node:20-alpine3.19  
+
+WORKDIR /home/app
+
+COPY package*.json .
+COPY tsconfig.json .
+
+RUN npm install
+
+COPY src/ src/           
+#the src is built on different device so the dist folder
+#might not work on diff os, so we cant copy dist directly
+#we have to build theproject in docker image itself
+ 
+
+RUN npm run build        
+#creates a dist folder
+
+CMD [ "npm", "start" ]     
+#npm start  starts from the dist folder
